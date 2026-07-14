@@ -43,4 +43,4 @@ docker compose -f docker-compose.dev.yml up -d --build auth-service
 
 El contenedor aplica `prisma migrate deploy` al arrancar y sirve en `http://localhost/api/auth/*` a través del gateway. Hot reload: `src/` y `prisma/` están montados como volumen.
 
-Para trabajar desde el host (Prisma Studio, migraciones nuevas, seed): renombrar `env.text` a `.env` y usar `npm run prisma:migrate` / `npm run prisma:seed`. Las claves RS256 de dev se generan con `infra/scripts/generate-dev-keys.sh` (raíz del workspace).
+Para trabajar desde el host (Prisma Studio, migraciones nuevas, seed): `cp .env.example .env` y usar `npm run prisma:migrate` / `npm run prisma:seed`. Las claves RS256 de dev se generan con `infra/scripts/generate-dev-keys.sh` (raíz del workspace).
