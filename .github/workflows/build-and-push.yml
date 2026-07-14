@@ -41,5 +41,8 @@ jobs:
           tags: |
             ghcr.io/${{ steps.ns.outputs.owner }}/mecavoltia-auth-service:latest
             ghcr.io/${{ steps.ns.outputs.owner }}/mecavoltia-auth-service:${{ github.sha }}
+          # Vincula el paquete GHCR a este repo (aparece en el sidebar + hereda permisos)
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
