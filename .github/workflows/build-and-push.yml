@@ -46,3 +46,20 @@ jobs:
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  # Avisa al repo de infra que despliegue (ya con la imagen nueva en GHCR).
+  # Requiere el secret INFRA_DEPLOY_TOKEN (PAT con scope repo) en este repo.
+  trigger-deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Disparar deploy en producción
+        env:
+          TOKEN: ${{ secrets.INFRA_DEPLOY_TOKEN }}
+        run: |
+          curl -sSf -X POST \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository_owner }}/mecavoltia_infra/dispatches" \
+            -d '{"event_type":"service-pushed","client_payload":{"service":"${{ github.event.repository.name }}"}}'
